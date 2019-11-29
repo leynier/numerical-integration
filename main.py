@@ -3,7 +3,15 @@ from gaussian_quadrature import gaussian_quadrature
 from utils import print_error
 
 
-def tabular_form():
+def get_limits():
+    try:
+        a, b = map(float, input('Insert the limits with the format "a, b": ').split(','))
+    except ValueError:
+        print_error('Error: Incorrect format, the limits should be a numbers and the separator should be a comma ",".')
+    return a, b
+
+
+def get_tabular_form_input():
     try:
         n = int(input('Insert the number of points of the function to integrate: '))
     except ValueError:
@@ -17,26 +25,26 @@ def tabular_form():
             print_error('Error: Incorrect format, the points should be a numbers and the separator should be a comma ",".')
         x_points.append(x)
         y_points.append(y)
-    try:
-        a, b = map(float, input('Insert the limits with the format "a, b": ').split(','))
-    except ValueError:
-        print_error('Error: Incorrect format, the limits should be a numbers and the separator should be a comma ",".')
-    spline = CubicSpline(x_points, y_points)
-    print(gaussian_quadrature(spline, a, b))
+    return x_points, y_points
 
 
-def analytical_form():
+def get_tabular_form():
+    x_points, y_points = get_tabular_form_input()
+    function = CubicSpline(x_points, y_points)
+    return function
+
+
+def get_analytical_form():
     pass
 
 
 if __name__ == "__main__":
     try:
-        option = int(input('Insert 1 if the function to be integrated is in the form of a table or 2 if it is in analytical form: ))
+        option = int(input('Insert 1 if the function to be integrated is in the form of a table or 2 if it is in analytical form: '))
         if option != 1 and option != 2:
             print_error('Error: The number of option should be 1 or 2.')
     except ValueError:
         print_error('Error: The number of option should be a integer.')
-    if option == 1:
-        tabular_form()
-    else:
-        analytical_form()
+    function = get_tabular_form() if option == 1 else get_analytical_form()
+    a, b = get_limits()
+    print(gaussian_quadrature(function, a, b))
