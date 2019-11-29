@@ -1,4 +1,6 @@
+from scipy import array, ndarray
 from scipy.interpolate import CubicSpline
+from sympy import sympify, SympifyError
 from gaussian_quadrature import gaussian_quadrature
 from utils import print_error
 
@@ -35,7 +37,11 @@ def get_tabular_form():
 
 
 def get_analytical_form():
-    pass
+    try:
+        function = sympify(input('Insert the analytical form of the function: '))
+    except SympifyError:
+        print_error('Error: It is not a recognizable function')
+    return lambda arg: array([function.evalf(subs={'x': i}) for i in arg]) if isinstance(arg, (tuple, list, ndarray)) else function.evalf(subs={'x': arg})
 
 
 if __name__ == "__main__":
