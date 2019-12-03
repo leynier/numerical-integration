@@ -25,4 +25,6 @@ def gaussian_quadrature(f, a, b, n = 5):
         Gaussian quadrature approximation to the integral
     """
     x, w = roots_legendre(n + 1)
-    return 0.5 * (b - a) * sum(w * f(0.5 * (b - a) * x + 0.5 * (b + a)))
+    x = 0.5 * (b - a) * x + 0.5 * (b + a)
+    w = 0.5 * (b - a) * w
+    return sum(w * f(x))
