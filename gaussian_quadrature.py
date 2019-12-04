@@ -1,4 +1,4 @@
-from roots_legendre import roots_legendre
+from roots_legendre_interval import roots_legendre_interval
 
 
 def gaussian_quadrature(f, a, b, n = 5):
@@ -24,7 +24,5 @@ def gaussian_quadrature(f, a, b, n = 5):
     val : float
         Gaussian quadrature approximation to the integral
     """
-    x, w = roots_legendre(n + 1)
-    x = 0.5 * (b - a) * x + 0.5 * (b + a)
-    w = 0.5 * (b - a) * w
+    x, w = roots_legendre_interval(n, a, b)
     return sum(w * f(x))
