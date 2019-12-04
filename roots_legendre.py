@@ -1,3 +1,4 @@
+from scipy import array
 from scipy.special import legendre
 
 
@@ -24,4 +25,7 @@ def roots_legendre(n):
     p = legendre(n + 1)
     x = legendre(n).roots
     w = 2 * (1 - x ** 2) / ((n + 1) ** 2 * p(x) ** 2)
+    temp = list(zip(x, w))
+    temp.sort()
+    x, w = array([i for i, _ in temp]), array([i for _, i in temp])
     return x, w
